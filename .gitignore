@@ -1,0 +1,27 @@
+.env
+.venv/
+logs/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# kremzapay_eval: attack base and poisoned KB are not published
+kremzapay_eval/attacks.jsonl
+kremzapay_eval/attacks_s1_cyberseceval.jsonl
+kremzapay_eval/kb_poisoned/
+kremzapay_eval/data/raw/
+# bot knowledge base is restricted and belongs to the bot repo (separate license) — never published here
+kremzapay_eval/kb_clean/
+# Windows download metadata
+*:Zone.Identifier
+# runtime state: bot copy DB, Qdrant storage, run logs (may contain PII from tests)
+kremzapay_eval/run/
+*.db
+qdrant/
+# campaign files built from the attack base contain attack texts — not published either
+kremzapay_eval/campaign_*.jsonl
+kremzapay_eval/near_dups_review*.tsv
+# S2 clean twins and combined KB folders are derived from unpublished KB articles
+kremzapay_eval/kb_s2_clean/
+kremzapay_eval/s2_manifest.json
+kremzapay_eval/s2_campaign.jsonl
