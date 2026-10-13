@@ -255,36 +255,6 @@ Projekt eksperymentu:
 | **użyteczność** | czy bot załatwił sprawę klienta; liczona osobno od bezpieczeństwa |
 | **stały zbiór** | ten sam zestaw ataków dla każdego testu; wynik mówi tylko o tym zestawie |
 
-## Czego to nie dowodzi
-
-- **Żadnych granic ryzyka.** Żadna z liczb nie jest oszacowaniem częstości w ogóle. S1 to dokładnie 0 / 245 na
-  stałym zbiorze statycznych ataków i nie mówi nic o atakującym adaptacyjnym. Pytania S2 są zgrupowane w 7
-  artykułach, więc 4 + 1 z 21 opisuje tylko tę próbkę.
-- **Bez formalnej prerejestracji.** Kryteria i odpowiedzi wzorcowe S2 były spisane przed przebiegiem, ale plan
-  analizy nie był zarejestrowany.
-- **Bez niezależnego etykietowania przez drugą osobę** (S2).
-- **Zgłoszenia to nie przechwycenia** (S2): odrzucone odpowiedzi nie były zapisywane. Żeby je zobaczyć, trzeba nowego
-  przebiegu z logowaniem kandydata przed sędzią.
-- Jeden model odpowiedzi na eksperyment, jeden przebieg; powtarzalność nie była mierzona. W eksperymencie z gołym
-  modelem temperatura i seed generacji nie były ustawione (domyślne Ollamy; `seed=42` dotyczy tylko losowania
-  zbioru). W S1 / S2 temperatura 0 jest wpisana w kodzie bota, seed 42 jest domyślny, ale nie były zapisywane per
-  przebieg.
-- Wszystkie trzy przebiegi były uruchomione z drzewa roboczego z niezacommitowanymi zmianami (Inspect zapisuje
-  `dirty`), więc sam hash commita nie odtwarza dokładnego stanu kodu. Dla S1 nie zapisano commita bota ani modelu
-  odpowiedzi.
-
-**Terminy w tym rozdziale**
-
-| Termin | Znaczenie |
-|---|---|
-| **granice ryzyka** | oszacowanie, jak często atak udałby się w ogóle, z przedziałem niepewności; tu nie da się go podać |
-| **atakujący adaptacyjny** | ktoś, kto widzi odpowiedzi bota i poprawia atak aż zadziała; tu ataki były stałe, nikt ich nie poprawiał |
-| **prerejestracja** | spisanie planu analizy przed przebiegiem, żeby nie dopasowywać go do wyników; tu były tylko kryteria, nie pełny plan |
-| **próbka zgrupowana** | pytania zależą od siebie (3 na artykuł), więc 21 pytań to nie 21 niezależnych testów |
-| **powtarzalność** | czy ten sam przebieg dałby ten sam wynik; nie mierzona, bo każdy eksperyment szedł raz |
-| **commit** | zapisany stan kodu w gicie z własnym hashem; pozwala wrócić dokładnie do tego stanu |
-| **drzewo robocze `dirty`** | w chwili przebiegu były zmiany w kodzie niezapisane w commicie, więc sam commit nie odtwarza stanu |
-
 ## Jak to jest zrobione
 
 **Stos.** Python 3.12, Inspect AI 0.3.276, Ollama z lokalnymi modelami (`qwen3:4b-instruct`,
