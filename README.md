@@ -151,7 +151,7 @@ w S1 tylko 2 artykuły. S1 jest więc wynikiem dla obrony wejściowej bota. Nie 
 |---|---|
 | **red team** | testowanie systemu z pozycji atakującego, żeby znaleźć słabe punkty zanim zrobi to ktoś obcy |
 | **czarna skrzynka** | testujący widzi tylko wejście (pytanie) i wyjście (odpowiedź) bota, nie zagląda do jego kodu podczas testu |
-| **kolekcja Qdrant** | jeden nazwany zbiór artykułów w Qdrancie; stanowisko ma własną, osobną od produkcji |
+| **kolekcja Qdrant** | w Qdrancie artykuły trzyma się w osobnych, nazwanych zbiorach, jak foldery; bot czyta z jednego wskazanego zbioru. Produkcyjny bot ma swój zbiór, a stanowisko testowe dostało własny, osobny, więc testy nie dotykają danych produkcji |
 | **baza zgłoszeń** | lokalna baza SQLite, w której bot zapisuje zgłoszenia i etap zatrzymania rozmowy; scorer z niej czyta |
 | **zamrożona kampania** | plik `campaign_s1.jsonl` z hashem sha256; przebieg liczy się tylko dla dokładnie tego pliku |
 | **CyberSecEval 2** | publiczny zbiór testów bezpieczeństwa modeli od Meta; stąd pochodzą teksty 245 ataków |
