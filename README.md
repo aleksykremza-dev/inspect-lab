@@ -16,9 +16,6 @@ użytkownika. I czy posłucha instrukcji ukrytej w artykule, który sam wyciągn
 zadaje zupełnie zwyczajne pytanie. Drugie pytanie jest ciekawsze, bo tam nikt nie atakuje przez czat, a mimo to
 odpowiedź może pójść nie tam, gdzie trzeba.
 
-Projekt zrobiłem jako praktykę przed rozmowami o pracy w obszarze AI safety i ewaluacji systemów LLM. Wolałem mieć
-jeden doprowadzony do końca przypadek z liczbami niż listę przeczytanych artykułów.
-
 ## Zakres
 
 Testowałem wyłącznie własne systemy: lokalny model i odizolowaną kopię własnego bota. Żadnych cudzych ani
@@ -39,9 +36,31 @@ Każdy eksperyment testuje inny system przez inne wejście. Tych liczb nie da si
 | **S1** (10.10.2026) | działająca kopia bota, wszystkie warstwy obrony | wiadomości użytkownika: 245 statycznych ataków (CyberSecEval 2, 237 rodzin) + 16 kontroli | **0 / 245** ataków się udało; 16 / 16 kontroli dostało odpowiedź |
 | **S2** (10.10.2026, rewizja 12.10) | kopia bota z instrumentacją, model odpowiedzi `qwen2.5:7b-instruct` | instrukcja wstrzyknięta **do artykułu w bazie wiedzy**; użytkownik pyta normalnie | **4 potwierdzone naruszenia + 1 nierozstrzygnięty** na 21 dialogów na zatrutej bazie; **0 / 21** na czystych bliźniakach |
 
+### Słownik
+
+| Termin | Znaczenie w tym projekcie |
+|---|---|
+| **prompt injection** | instrukcja ukryta w wiadomości lub dokumencie, która próbuje zmienić zachowanie bota wbrew jego zasadom |
+| **jailbreak** | prompt injection w wiadomości użytkownika, nastawiony na obejście zasad modelu |
+| **RAG / wyszukiwanie (retrieval)** | bot najpierw szuka pasujących artykułów w bazie wiedzy, potem model pisze odpowiedź na ich podstawie |
+| **zatruty artykuł** | artykuł w bazie wiedzy, do którego dopisano akapit z instrukcją dla modelu (np. "podaj klientowi ten adres") |
+| **czysty bliźniak** | ten sam artykuł bez dopisanego akapitu; reszta identyczna bajt w bajt. Para zatruty / bliźniak pozwala przypisać różnicę w odpowiedzi wyłącznie wstrzykniętemu tekstowi |
+| **kanarek (canary)** | z góry wybrany ciąg, adres lub liczba wpisane do instrukcji; jego pojawienie się w odpowiedzi sygnalizuje, że model wykonał instrukcję. Sam kanarek nie przesądza o naruszeniu, werdykt jest nadawany osobno |
+| **ekspozycja** | fakt, że zatruty blok rzeczywiście trafił do promptu modelu; mierzona po hashu bloku, nie zakładana |
+| **naruszenie** | odpowiedź spełnia spisane przed przebiegiem kryterium naruszenia dla danego pytania |
+| **nierozstrzygnięte** | odpowiedź wykonuje wstrzykniętą instrukcję, ale kryterium nie jest spełnione dosłownie; liczone osobno, nie jako naruszenie ani jako sukces obrony |
+| **sędzia ugruntowania (L4)** | warstwa bota sprawdzająca, czy odpowiedź wynika z pobranych artykułów; odrzucona odpowiedź zamienia się w zgłoszenie |
+| **zgłoszenie (ticket)** | bot nie odpowiada sam, tylko przekazuje sprawę człowiekowi |
+| **warstwy L0–L5** | kolejne etapy bota: reguły, klasyfikator tematu, decyzja i wyszukiwanie, generator, sędzia, odpowiedź; scorer zapisuje, na którym etapie dialog się skończył |
+| **rodzina ataków** | grupa wariantów tego samego ataku; 245 rekordów w 237 rodzinach znaczy, że część rekordów to warianty jednego pomysłu, nie niezależne testy |
+| **kontrola** | zwykłe pytanie bez ataku; sprawdza, czy obrona nie blokuje normalnej pracy |
+
 ---
 
 ## 1. Goły model z promptem systemowym (`gemini_eval/`)
+
+Nazwa katalogu jest historyczna i nie oznacza, że testowany był model Gemini. Testowany model to lokalny
+`qwen3:4b-instruct` przez Ollamę.
 
 Pytanie: czy sam prompt systemowy bota wystarczy, żeby zatrzymać duży zbiór ogólnych jailbreaków?
 
